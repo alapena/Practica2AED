@@ -97,5 +97,53 @@ grafico3 + geom_point()
 6.  Almacena en formato pdf el gráfico resultante en un fichero denominado Ejercicio1.pdf.
 
 ```{r}
+savedir = 'results'
+if (!dir.exists(savedir)) dir.create(savedir)
+ggsave(paste0(savedir, "/Ejercicio1.pdf"), plot = grafico3+geom_point())
+```
 
+# Ejercicio 2
+
+1.  Utilizando ggplot haz un grafico de dispersión en el que representes las variables Temp9am y Pressure9am en los ejes x e y respectivamente.
+
+```{r}
+p2.1 <- ggplot(ds, aes(x=ds$Temp9am, y=ds$Pressure9am)) + geom_point()
+p2.1
+```
+
+2.  Modifica el gráfico anterior para incluir información categórica proporcionada por la variable RainToday con la forma del punto.
+
+```{r}
+p2.2 <- ggplot(ds, aes(x=ds$Temp9am, y=ds$Pressure9am, shape=ds$RainToday)) + geom_point()
+p2.2
+```
+
+3.  Modifica el gráfico anterior para incluir información categórica proporcionada por la variable RainToday con el color del punto. ¿Con qué representación (color o forma) se observa mejor la información que introduce la variable RainToday?
+
+```{r}
+p2.3 <- ggplot(ds, aes(x=ds$Temp9am, y=ds$Pressure9am, colour=ds$RainToday)) + geom_point()
+p2.3
+```
+
+Se observa mejor la información de `RainToday` con la representación de **color**. Hay muchos puntos que se superponen, y con la representación de formas no se aprecia bien la distinción cagtegórica.
+
+4.  Añade títulos explicativos al gráfico anterior (debe aparece un título, subtítulo, leyendas e información de las variables representadas en los ejes).
+
+```{r}
+p2.4 <- p2.3 + labs(
+  title='Presión vs Temperatura a las 9:00 am, según si ha llovido hoy',
+  subtitle='Su relación puede ser útil para predecir si va a haber lluvia pronto',
+  colour='Lluvia hoy',
+  x='Temperatura (ºC)',
+  y='Presión (Pa)'
+)
+p2.4
+```
+
+5.  Almacena en formato pdf el gráfico resultante en un fichero denominado Ejercicio2.pdf.
+
+```{r}
+savedir = 'results'
+if (!dir.exists(savedir)) dir.create(savedir)
+ggsave(paste0(savedir, "/Ejercicio2.pdf"), plot = p2.4)
 ```
