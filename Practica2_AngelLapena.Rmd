@@ -294,3 +294,33 @@ p5.4 +
 ```{r}
 ggsave('./results/Ejercicio5.pdf', create.dir=T)
 ```
+
+# Ejercicio 6
+
+El fichero iceRiver.RData contiene información del caudal de dos ríos islandeses medidos a diarios durante 3 años. Puedes obtener información detallada de las variables usando \> ?tseries::ice.river
+
+```{r}
+load('./data/iceRiver.RData')
+str(ice.river.df)
+```
+
+1.  Representa el caudal de ambos ríos a lo largo del período considerado coloreando una serie (flow.vat) en color rojo y la otra en color azul. Utiliza la función labs para enriquecer el gráfico.
+
+```{r}
+p6.1 <- ggplot(ice.river.df, aes(x=time))
+p6.3 <- p6.1 + 
+  geom_line(aes(y=flow.vat, color="Vat")) + 
+  geom_line(aes(y=flow.jok, color="Jok")) + 
+  scale_color_manual(values = c("Vat" = "red", "Jok" = "blue")) +
+  labs(
+    title='Caudal de los ríos a lo largo de los años',
+    y='Flow',
+    x='Tiempo (años)',
+    colour='Río'
+    )
+p6.3
+```
+
+```{r}
+ggsave('./results/Ejercicio6.pdf', create.dir=T)
+```
