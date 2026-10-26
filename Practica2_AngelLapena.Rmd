@@ -68,7 +68,7 @@ load('./data/weatherAUS.RData')
 2.  Crea un objeto ggplot denominado grafico1 en el que esté definido el conjunto de datos ds alojado en el fichero weatherAUS.RData y un aesthetics en el que en el eje x esté definida la variable MinTemp y en el eje y esté definida la variable MaxTemp.
 
 ```{r}
-grafico1 <- ggplot(ds, aes(x=ds$MinTemp, y=ds$MaxTemp))
+grafico1 <- ggplot(ds, aes(x=MinTemp, y=MaxTemp))
 grafico1
 ```
 
@@ -83,7 +83,7 @@ grafico1 + geom_point()
 4.  Genera ahora el mismo gráfico y almacénalo en grafico2 pero define el aesthetics para visualizar las variables MinTemp y MaxTemp en los ejes de la gráfica y la variable categórica RainTomorrow como el color. A partir del objeto grafico2, representa un gráfico de dispersión en el que se muestren los puntos con el color del punto correspondiente a la variable RainTomorrow.
 
 ```{r}
-grafico2 <- ggplot(ds, aes(x=ds$MinTemp, y=ds$MaxTemp, colour=ds$RainTomorrow))
+grafico2 <- ggplot(ds, aes(x=MinTemp, y=MaxTemp, colour=RainTomorrow))
 grafico2 + geom_point()
 ```
 
@@ -107,21 +107,21 @@ ggsave(paste0(savedir, "/Ejercicio1.pdf"), plot = grafico3+geom_point())
 1.  Utilizando ggplot haz un grafico de dispersión en el que representes las variables Temp9am y Pressure9am en los ejes x e y respectivamente.
 
 ```{r}
-p2.1 <- ggplot(ds, aes(x=ds$Temp9am, y=ds$Pressure9am)) + geom_point()
+p2.1 <- ggplot(ds, aes(x=Temp9am, y=Pressure9am)) + geom_point()
 p2.1
 ```
 
 2.  Modifica el gráfico anterior para incluir información categórica proporcionada por la variable RainToday con la forma del punto.
 
 ```{r}
-p2.2 <- ggplot(ds, aes(x=ds$Temp9am, y=ds$Pressure9am, shape=ds$RainToday)) + geom_point()
+p2.2 <- ggplot(ds, aes(x=Temp9am, y=Pressure9am, shape=RainToday)) + geom_point()
 p2.2
 ```
 
 3.  Modifica el gráfico anterior para incluir información categórica proporcionada por la variable RainToday con el color del punto. ¿Con qué representación (color o forma) se observa mejor la información que introduce la variable RainToday?
 
 ```{r}
-p2.3 <- ggplot(ds, aes(x=ds$Temp9am, y=ds$Pressure9am, colour=ds$RainToday)) + geom_point()
+p2.3 <- ggplot(ds, aes(x=Temp9am, y=Pressure9am, colour=RainToday)) + geom_point()
 p2.3
 ```
 
@@ -146,4 +146,64 @@ p2.4
 savedir = 'results'
 if (!dir.exists(savedir)) dir.create(savedir)
 ggsave(paste0(savedir, "/Ejercicio2.pdf"), plot = p2.4)
+```
+
+# Ejercicio 3
+
+1.  Carga el fichero iris.tidy.Rdata utilizando lo aprendido en la práctica 1.
+
+```{r}
+load('data/iris_tidy.Rdata')
+```
+
+2.  Utiliza la función str() para ver qué variables contiene el dataset.
+
+```{r}
+str(iris.tidy)
+```
+
+3.  Crea un objeto ggplot denominado iris.grafico1 en el que esté definido el conjunto de datos iris.tidy alojado en el fichero iris.tidy.RData y un aesthetics en el que en el eje x esté definida la variable Species y en el eje y esté definida la variable Value.
+
+```{r}
+iris.grafico1 <- ggplot(iris.tidy, aes(x=Species, y=Value))
+iris.grafico1
+```
+
+4.  Añade una capa que defina el objeto geométrico necesario para construir un gráfico de dispersión de las variables Species y Value.
+
+```{r}
+iris.grafico1 + geom_point()
+```
+
+5.  Modifica el aesthetics de iris.grafico1 para visualizar la variable categórica Part y almacénalo en iris.grafico2. A partir del objeto iris.grafico2, representa un gráfico de dispersión en el que se muestren los puntos dados por las variables Species y Value, y el color del punto se corresponda con el valor de la variable Part.
+
+```{r}
+iris.grafico2 <- ggplot(iris.tidy, aes(x=Species, y=Value, colour=Part))
+iris.grafico2 + geom_point()
+```
+
+6.  Incluye información de la variable Measure haciendo dos gráficos de dispersión (dispuestos en filas) con facet_grid(), como en el apartado de introducción, para los dos valores que toma la variable Measure. Prueba a cambiar la disposición de los gráficos para que sea en columnas ¿Qué disposición, en filas o en columnas, permite comparar mejor los valores de las dos variables?
+
+```{r}
+iris.grafico1 + geom_point() + facet_grid(Part~.)
+```
+
+```{r}
+iris.grafico1 + geom_point() + facet_grid(.~Part)
+```
+
+Es más informativa la disposición en columnas, porque comparten el eje Y, y eso nos permite comparar visualmente de forma directa la distribución de los puntos entre las dos gráficas en función de la variable Value.
+
+7.  Cambia ahora la capa geom_point() del gráfico anterior por la capa geom_jitter(). ¿Qué diferencia observas?
+
+```{r}
+iris.grafico1 + geom_jitter() + facet_grid(.~Part)
+```
+
+Es más fácil diferenciar los *clusters* en que se agrupan los datos.
+
+8.  Almacena en formato pdf el gráfico resultante en un fichero denominado Ejercicio3.pdf.
+
+```{r}
+ggsave('./results/Ejercicio3.pdf', create.dir=T)
 ```
